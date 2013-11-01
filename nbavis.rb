@@ -5,7 +5,7 @@ class Nbareader
   def initialize
     @nba_url = "http://api.sportsdatallc.org/nba-t3/games/2013/reg/schedule.xml?api_key=ukesef6h6482qnf5azfdmpz6"
     @nba_data = Nokogiri::HTML(open(@nba_url))
-    @output_file = "nba.html"
+    @output_file = "output.html"
     @gamehashes = []
     @gamesbydate = []
     @startdate = Date.new(2013,10,29)
@@ -50,22 +50,14 @@ class Nbareader
 
   def write_to_file
     file = File.open(@output_file, 'w')
-    file.puts "<html>"
-    file.puts "<head>"
-    file.puts "<title=NBA Schedule 2014>"
-    file.puts "</head>"
-    file.puts "<body>"
     @gamesbydate.size.times do |date|
-      file.puts "<div>"
-      file.puts "<h3>#{@startdate+date}</h3>"
+      file.puts "      <div>"
+      file.puts "        <h3>#{@startdate+date}</h3>"
       @gamesbydate[date].each do |game|
-        file.puts "<h4>#{game[:awayalias]} @ #{game[:homealias]}</h4>"
-        file.puts "<p>#{game[:ESTdate]} @ #{game[:ESTtime]}</p>"
+        file.puts "        <p><span>#{game[:awayalias]} @ #{game[:homealias]}</span>#{game[:ESTtime]}</p>"
       end
-      file.puts "</div>"
+      file.puts "      </div>"
     end
-    file.puts "</body>"
-    file.puts "</html>"
   end
 end
 
